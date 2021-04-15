@@ -12,8 +12,10 @@ public class Target : MonoBehaviour
   MessageController textInteraction;
   [SerializeField]
   DialogItem dialogItem;
+  [SerializeField]
+  List<Object> dialogsItems;
 
-  List<DialogItem> dialogsItems;
+  int index;
 
   void Awake()
   {
@@ -26,8 +28,31 @@ public class Target : MonoBehaviour
 
   public void handleClick()
   {
-    HandleColor();
-    HandleTextInteraction();
-    textInteraction.Message = dialogItem.Message;
+    
+     if(!textInteraction.gameObject.activeSelf)
+    {
+      textInteraction.gameObject.SetActive(true);
+    }
+    if(dialogsItems[index] as AlertDialogueItem) {
+
+      AlertDialogueItem item = dialogsItems[index] as AlertDialogueItem;
+      textInteraction.Message = item.Message;
+      //Debug.Log(item.AlertColor);
+      textInteraction.FontColor =  item.AlertColor;
+
+    }
+    else
+    {
+      DialogItem item = dialogsItems[index] as DialogItem;
+      textInteraction.Message = item.Message;
+      textInteraction.FontColor = Color.white;
+
+    } 
+
+    //textInteraction.Message = dialogsItems[index].Message;
+    
+    index = index + 1 < dialogsItems.Count ? index + 1 : 0;
+  
   }
+//2020.3.2f1
 }

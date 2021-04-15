@@ -43,19 +43,19 @@ public class VRCamera : MonoBehaviour
       reticleTrs.localScale = initialScale;
       vrcontrols.Gameplay.VRClick.performed += _=> ClickOverObject();
   }
-
+/**/
   void ClickOverObject()
   {
     Debug.Log(target?.gameObject.layer);
     switch(target?.gameObject.layer)
       {
         case 8:
-          target?.handleClick();
+          //target?.handleClick();
           //target.HandleColor();
           break;
         case 9:
-          Debug.Log("click");
-          target?.HandleTextInteraction();
+          //Debug.Log("click");
+          //target?.HandleTextInteraction();
           break;
       }
   }
