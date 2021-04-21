@@ -50,7 +50,7 @@ public class VRCamera : MonoBehaviour
     switch(target?.gameObject.layer)
       {
         case 8:
-          //target?.handleClick();
+          target?.handleClick();
           //target.HandleColor();
           break;
         case 9:
