@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
+using System.IO;
 
-public class VRCamera : MonoBehaviour
+public class VRCamera : NetworkBehaviour
 {
   [SerializeField]
   Color rayColor = Color.green;
@@ -84,4 +86,27 @@ public class VRCamera : MonoBehaviour
     Gizmos.color = rayColor;
     Gizmos.DrawRay(transform.position, transform.forward * rayDistance);
   }
+      public override void NetworkStart()
+    {
+        transform.position = GameManager.instance.startPoint;
+        base.NetworkStart();
+    }
+
+    /*
+    public override void NetworkStart(Stream stream)
+    {
+        base.NetworkStart(stream);
+    }
+    */
+
+    public override void OnGainedOwnership()
+    {
+        base.OnGainedOwnership();
+    }
+
+    public override void OnLostOwnership()
+    {
+        base.OnLostOwnership();
+    }
+
 }
