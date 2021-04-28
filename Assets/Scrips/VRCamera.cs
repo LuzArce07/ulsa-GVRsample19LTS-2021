@@ -24,9 +24,13 @@ public class VRCamera : NetworkBehaviour
   VRControls vrcontrols;
 
   Target target;
+  [SerializeField]
+  Camera m_camera;
+
 
   void Awake()
   {
+    m_camera = GetComponent<Camera>();
     vrcontrols = new VRControls();
   }
 
@@ -42,8 +46,13 @@ public class VRCamera : NetworkBehaviour
 
   void Start()
   {
+    if(IsLocalPlayer){
       reticleTrs.localScale = initialScale;
       vrcontrols.Gameplay.VRClick.performed += _=> ClickOverObject();
+    } else {
+      m_camera.enabled = false;
+    }
+      
   }
 /**/
   void ClickOverObject()
@@ -60,6 +69,10 @@ public class VRCamera : NetworkBehaviour
           //target?.HandleTextInteraction();
           break;
       }
+  }
+
+  void Update(){
+    transform.Translate(new Vector3(AxisDirection.x, 0f, AxisDirection.y) * Time.deltaTime * 3f);
   }
 
   void FixedUpdate()
@@ -108,5 +121,7 @@ public class VRCamera : NetworkBehaviour
     {
         base.OnLostOwnership();
     }
+
+    Vector2 AxisDirection => vrcontrols.Gameplay.Movement.ReadValue<Vector2>();
 
 }

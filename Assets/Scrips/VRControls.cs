@@ -25,6 +25,22 @@ public class @VRControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""85d99997-e9c7-4d7b-81d2-94cf3c1f501e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ec4ebce-7251-4d8a-b6fc-07dbedb02098"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -47,6 +63,28 @@ public class @VRControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Android"",
                     ""action"": ""VRClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""831286ac-1314-4d34-8d2a-652090ccd250"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d960a42-04a3-48e1-8096-18c4f6c47759"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""2D Vector"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -81,6 +119,8 @@ public class @VRControls : IInputActionCollection, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_VRClick = m_Gameplay.FindAction("VRClick", throwIfNotFound: true);
+        m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
+        m_Gameplay__2DVector = m_Gameplay.FindAction("2D Vector", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -131,11 +171,15 @@ public class @VRControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_VRClick;
+    private readonly InputAction m_Gameplay_Movement;
+    private readonly InputAction m_Gameplay__2DVector;
     public struct GameplayActions
     {
         private @VRControls m_Wrapper;
         public GameplayActions(@VRControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @VRClick => m_Wrapper.m_Gameplay_VRClick;
+        public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
+        public InputAction @_2DVector => m_Wrapper.m_Gameplay__2DVector;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -148,6 +192,12 @@ public class @VRControls : IInputActionCollection, IDisposable
                 @VRClick.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnVRClick;
                 @VRClick.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnVRClick;
                 @VRClick.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnVRClick;
+                @Movement.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @_2DVector.started -= m_Wrapper.m_GameplayActionsCallbackInterface.On_2DVector;
+                @_2DVector.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.On_2DVector;
+                @_2DVector.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.On_2DVector;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -155,6 +205,12 @@ public class @VRControls : IInputActionCollection, IDisposable
                 @VRClick.started += instance.OnVRClick;
                 @VRClick.performed += instance.OnVRClick;
                 @VRClick.canceled += instance.OnVRClick;
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @_2DVector.started += instance.On_2DVector;
+                @_2DVector.performed += instance.On_2DVector;
+                @_2DVector.canceled += instance.On_2DVector;
             }
         }
     }
@@ -180,5 +236,7 @@ public class @VRControls : IInputActionCollection, IDisposable
     public interface IGameplayActions
     {
         void OnVRClick(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void On_2DVector(InputAction.CallbackContext context);
     }
 }
